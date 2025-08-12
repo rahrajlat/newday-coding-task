@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Landing/raw source tables for the project."
+    database: dbt_db
+    schema: raw
+    loader: "postgres"
+
+    tables:
+      - name: customer
+        description: "This table holds the customer information"
+        columns:
+          - name: customer_id
+            tests: [not_null, unique]
+      
+      - name: product_category
+        description: "This table holds the product category information"
+        columns:
+          - name: product_id
+            tests: [not_null, unique]
+          - name: category_id
+            tests: [not_null, unique]
+
+      - name: product
+        description: "This table holds the product information"
+        columns:
+          - name: product_id
+            tests: [not_null, unique]
+          - name: product_category_id
+            tests: [not_null, unique]
+
+      - name: kafka_stream
+        description: "This table holds the product information"
+      
+      - name: sales_fact
+        description: "This table holds the product information"
+      
+      - name: subscription_data
+        description: "This table holds the product information"
+
+      - name: weather_data
+        description: "This table holds the product information"
