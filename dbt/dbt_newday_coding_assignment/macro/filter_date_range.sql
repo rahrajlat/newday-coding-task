@@ -1,3 +1,14 @@
+/*
+
+## Question 7: 
+Create a dbt macro that accepts date range parameters and filters sales data accordingly. 
+Use this macro in a model to calculate daily revenue totals. Handle cases where no data exists for the given date range.
+
+
+
+*/
+
+
 {% macro filter_date_range(start_date, end_date, table_name, filter_column) %}
 
     {{ log("Running Job for the Range " ~ start_date ~ " to " ~ end_date ~ " on the table " ~ table_name, info=true) }}

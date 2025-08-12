@@ -1,3 +1,15 @@
+/*
+
+## Question 4: 
+Create a model that analyzes payment method preferences by calculating:
+- Total revenue by payment method
+- Average order value by payment method
+- Number of orders by payment method
+- Percentage distribution of each payment method
+
+
+*/
+
 with payment_revenue as 
 
 (

@@ -1,3 +1,9 @@
+/*
+
+## Question 1:
+ Create a dbt model that calculates total revenue by product category for each month. Include basic data transformations and aggregations.
+*/
+
 with product_cte as 
 (
 

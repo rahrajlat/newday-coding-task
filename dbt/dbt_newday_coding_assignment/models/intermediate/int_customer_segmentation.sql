@@ -1,3 +1,19 @@
+/*
+
+
+## Question 3: 
+Create a dbt model that segments customers into tiers based on their total purchase amount:
+- "High Value": Total purchases >= $1000
+- "Medium Value": Total purchases between $500-$999
+- "Low Value": Total purchases < $500
+
+Include customer names and calculate the number of orders per customer.
+
+
+
+*/
+
+
 with cte_customer as 
 (
 select customer_id,customer_name from  {{ ref('stg_customer') }}

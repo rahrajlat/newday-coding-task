@@ -1,3 +1,10 @@
+/*
+
+This was created to reduce the code complexity
+
+*/
+
+
 {% macro get_month_name_from_date(date_col) %}
  {{ log("Running get_month_name_from_date for " ~ date_col, info=true) }}
     CASE 

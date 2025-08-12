@@ -1,3 +1,16 @@
+/*
+
+
+## Question 6:
+Analyze seasonal sales patterns by creating a model that shows:
+- Monthly sales trends by product category
+- Quarter-over-quarter growth rates
+- Identify the best and worst performing months for each category
+- Calculate the coefficient of variation to measure sales volatility
+
+
+*/
+
 
 
 with sales_joined

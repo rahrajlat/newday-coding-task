@@ -1,3 +1,14 @@
+/*
+
+## Question 5: 
+Create a dbt model that flags orders for review based on business rules:
+- `discount_applied` > 30%
+- `shipping_cost` > 10% of `order_amount`
+- Handle null values in both `discount_applied` and `shipping_cost`
+
+*/
+
+
 with sales_fact_cte as 
 (
 select 
