@@ -1,0 +1,19 @@
+name: 'dbt_newday_coding_assignment'
+version: '1.0'
+config-version: 2
+
+profile: 'profile_dbt_newday_coding_assignment'
+
+model-paths: ["models"]
+macro-paths: ['macro']
+snapshot-paths: ["snapshots"]
+models:
+  my_dbt_project:
+    intermediate:
+      +materialized: table
+      +enabled: true
+      +schema: staging_layer
+    core:
+      +materialized: table
+      +enabled: true
+      +schema: core_layer

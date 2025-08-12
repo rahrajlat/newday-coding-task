@@ -1,0 +1,12 @@
+profile_dbt_newday_coding_assignment:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: admin
+      password: admin
+      port: 5432
+      dbname: dbt_db
+      schema: public
+      threads: 1
