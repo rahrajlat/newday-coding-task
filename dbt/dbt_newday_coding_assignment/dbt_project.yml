@@ -10,12 +10,13 @@ seed-paths: ["seeds"]      # put CSVs under ./seeds/...
 
 models:
   dbt_newday_coding_assignment:
-    raw:
-      +materialized: table
-      +enabled: true
-      +schema: raw
     
     staging:
+      +materialized: table
+      +enabled: true
+      +schema: staging
+    
+    intermediate:
       +materialized: table
       +enabled: true
       +schema: staging
@@ -24,3 +25,8 @@ seeds:
   dbt_newday_coding_assignment:
     +schema: raw
     +quote_columns: false
+
+
+vars:
+  start_date: 2028-01-16
+  end_date: 2028-01-17
