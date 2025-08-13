@@ -9,6 +9,8 @@ Create a dbt model that segments customers into tiers based on their total purch
 
 Include customer names and calculate the number of orders per customer.
 
+Rahul - Looking at the data there are some customers who have no transaction in the fact table , show we include them ? - I have included it by doing a Right join
+and  COALESCE
 
 */
 
@@ -18,6 +20,8 @@ WITH CTE_CUSTOMER AS (
         CUSTOMER_ID,
         CUSTOMER_NAME
     FROM {{ ref('stg_customer') }}
+    WHERE
+    STATUS= 'active'
 
 ),
 
@@ -45,19 +49,20 @@ SALES_PER_CUSTOMER AS (
 MERGE_CUST_SALES AS (
 
     SELECT
-        SPC.CUSTOMER_ID,
-        CUS.CUSTOMER_NAME,
-        TOTAL_ORDERS,
-        TOTAL_PURCHASE_AMOUNT,
+         COALESCE(SPC.CUSTOMER_ID, CUS.CUSTOMER_ID) AS CUSTOMER_ID,
+    CUS.CUSTOMER_NAME,
+    COALESCE(TOTAL_ORDERS, 0) AS TOTAL_ORDERS,
+    COALESCE(TOTAL_PURCHASE_AMOUNT, 0) AS TOTAL_PURCHASE_AMOUNT,
         CASE
             WHEN TOTAL_PURCHASE_AMOUNT >= 1000 THEN 'High Value'
             WHEN TOTAL_PURCHASE_AMOUNT BETWEEN 500 AND 999 THEN 'Medium Value'
             WHEN TOTAL_PURCHASE_AMOUNT < 500 THEN 'Low Value'
+            WHEN TOTAL_PURCHASE_AMOUNT IS NULL THEN 'Low Value'
         END AS CUSTOMER_TIERS
 
     FROM SALES_PER_CUSTOMER AS SPC
-        LEFT JOIN CTE_CUSTOMER AS CUS
-            ON SPC.CUSTOMER_ID = CUS.CUSTOMER_ID
+        RIGHT JOIN CTE_CUSTOMER AS CUS -- There can be customers who havent placed an Order?
+            ON SPC.CUSTOMER_ID = CUS.CUSTOMER_ID 
 )
 
 SELECT * FROM MERGE_CUST_SALES

@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: marts
+    description: "Reporting Tables that are exposed for Analytics"
+    database: dbt_db
+    schema: marts
+    loader: "postgres"
+
+    tables:
+      - name: mart_customer_segmentation
+        description: "This table holds the customer information"
+        columns:
+          - name: customer_id
+            tests: [not_null, unique]
+      
+    
