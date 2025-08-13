@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: int_seasonal_sales_patterns_monthly
+  description: '{{ doc("int_seasonal_sales_patterns_monthly") }}'

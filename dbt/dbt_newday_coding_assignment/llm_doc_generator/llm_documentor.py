@@ -35,6 +35,7 @@ def generate_model_documentation(sql_content: str):
 
             Rules:
             - Use plain, simple language.
+            - Do not include any Jinja templates or braces.
             - Do not include or render any Jinja templates in the explanation.
             - Do not add anything outside the Purpose and Logic Flow sections.
             - Keep the tone and style the same for every answer.
@@ -63,13 +64,14 @@ def generate_model_documentation(sql_content: str):
         print("Error:", response.status_code)
 
 
-def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str:
+def llm_docs_generator(model_name: str, manifest_file: str, project: str, out_dir: str) -> str:
     """_summary_
 
     Args:
         model_name (str): Name of the DBT Model
         manifest_file (str): DBT Manifest File
         project (str): DBT Project Name
+        out_dir (str): Output Dir
 
     Returns:
         str: AI Documentation
@@ -91,7 +93,7 @@ def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str
     m_name = target_node_id.split(".")[-1]          # model name
     # not used, but kept if needed
     schema = node.get("schema")
-    sql = node.get("raw_code", "")
+    sql = node.get("compiled_code", "")
 
     # Keep asking until the user accepts
     while True:
@@ -120,8 +122,8 @@ def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str
     )
 
     out_dir = Path(
-        "/Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/"
-        "dbt_newday_coding_assignment/models/staging/docs_mds"
+        f"/Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/"
+        f"dbt_newday_coding_assignment/models/{out_dir}/docs_mds"
     )
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -152,8 +154,9 @@ def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str
 
 if __name__ == "__main__":
     model_name = sys.argv[1]
+    out_dir = sys.argv[2]
     dbt_project = 'dbt_newday_coding_assignment'
     dbt_manifest = "/Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/dbt_newday_coding_assignment/target/manifest.json"
 
     llm_docs_generator(model_name=model_name,
-                       manifest_file=dbt_manifest, project=dbt_project)
+                       manifest_file=dbt_manifest, project=dbt_project, out_dir=out_dir)

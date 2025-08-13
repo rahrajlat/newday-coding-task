@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: int_sales_revenue_product_category_monthly
+  description: '{{ doc("int_sales_revenue_product_category_monthly") }}'

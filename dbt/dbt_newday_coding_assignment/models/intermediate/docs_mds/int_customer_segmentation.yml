@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: int_customer_segmentation
+  description: '{{ doc("int_customer_segmentation") }}'

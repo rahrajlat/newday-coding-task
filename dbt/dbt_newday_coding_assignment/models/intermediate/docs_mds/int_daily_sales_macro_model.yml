@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: int_daily_sales_macro_model
+  description: '{{ doc("int_daily_sales_macro_model") }}'

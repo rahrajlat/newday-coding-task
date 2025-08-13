@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: int_payment_method_metrics
+  description: '{{ doc("int_payment_method_metrics") }}'
