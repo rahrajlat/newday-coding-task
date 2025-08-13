@@ -1,0 +1,62 @@
+version: "3.9"
+
+x-airflow-common: &airflow-common
+  build: .
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__WEBSERVER__DEFAULT_UI_USER_USERNAME: admin
+    AIRFLOW__WEBSERVER__DEFAULT_UI_USER_PASSWORD: admin
+  volumes:
+    - /Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dags:/opt/airflow/dags
+    - /Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt:/opt/airflow/dbt
+    - ./plugins:/opt/airflow/plugins
+    - ./logs:/opt/airflow/logs
+  depends_on:
+    - postgres
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: airflow-postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    # map to 5433 on the host to avoid clashing with any local Postgres on 5432
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: >
+      bash -c "
+      until pg_isready -h postgres -p 5432 -U airflow; do
+        echo 'Waiting for postgres...'; sleep 2;
+      done;
+      airflow db upgrade &&
+      airflow users create --username admin --password admin \
+        --firstname Admin --lastname User --role Admin --email admin@example.com || true;
+      exec airflow webserver
+      "
+    ports:
+      - "8080:8080"
+
+  scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: >
+      bash -c "
+      until pg_isready -h postgres -p 5432 -U airflow; do
+        echo 'Waiting for postgres...'; sleep 2;
+      done;
+      airflow db upgrade;
+      exec airflow scheduler
+      "
+
+volumes:
+  postgres_data:

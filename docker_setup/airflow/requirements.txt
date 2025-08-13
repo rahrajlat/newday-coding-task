@@ -1,0 +1,6 @@
+# dbt CLI + postgres adapter
+dbt-core==1.9.0
+dbt-postgres==1.9.0
+
+# (optional but handy)
+psycopg2-binary==2.9.9
