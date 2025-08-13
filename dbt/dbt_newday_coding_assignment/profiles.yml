@@ -3,7 +3,7 @@ profile_dbt_newday_coding_assignment:
   outputs:
     dev:
       type: postgres
-      host: localhost
+      host: 192.168.0.208
       user: admin
       password: admin
       port: 5432
