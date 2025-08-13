@@ -1,3 +1,3 @@
-select * from 
+SELECT *
 
 FROM {{ ref('int_seasonal_sales_patterns_quarterly') }}
