@@ -16,7 +16,10 @@ WITH SALES_JOINED AS (
         ORDER_DATE,
         STG_PRD_CAT.CATEGORY_NAME,
         DATE_TRUNC('month', ORDER_DATE)::DATE AS MONTHLY_DATE,
-        ORDER_AMOUNT
+        ORDER_AMOUNT,
+        DISCOUNT_APPLIED,
+        SHIPPING_COST
+
 
     FROM
         {{ ref('stg_sales_fact') }} AS SF
@@ -37,7 +40,8 @@ SALES_PER_MONTH AS (
             SELECT
                 CATEGORY_NAME,
                 MONTHLY_DATE,
-                SUM(ORDER_AMOUNT) AS REVENUE
+                --SUM(ORDER_AMOUNT) AS REVENUE
+                SUM(ORDER_AMOUNT - (ORDER_AMOUNT * COALESCE(DISCOUNT_APPLIED, 0)) + COALESCE(SHIPPING_COST, 0)) AS REVENUE
             FROM
                 SALES_JOINED
             GROUP BY CATEGORY_NAME, MONTHLY_DATE
