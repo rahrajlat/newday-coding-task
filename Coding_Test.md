@@ -250,7 +250,7 @@ When the dbt docs generate command is executed , this gets picked up and shown i
 
 ## Code Quality - SQL Fluff implementation
 
-As part of the code quality, I have configured sqlfull within the dbt project. The configuration file is under 
+As part of the code quality, I have configured sqlfuff within the dbt project. The configuration file is under 
 
 dbt/dbt_newday_coding_assignment/.sqlfluff
 
