@@ -28,8 +28,8 @@ seeds:
 
 
 vars:
-  start_date: 2028-01-16
-  end_date: 2028-01-17
+  start_date: 2024-01-15
+  end_date: 2024-01-16
 
 
 #sqlfluff fix --templater dbt /Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/dbt_newday_coding_assignment/.sqlfluff models/intermediate/

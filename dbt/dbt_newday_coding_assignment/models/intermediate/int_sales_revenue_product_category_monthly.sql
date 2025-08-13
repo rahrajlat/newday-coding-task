@@ -45,16 +45,16 @@ TRANSFORMATION_CTE AS (
         CATEGORY_NAME,
         MONTH_START AS MONTHLY_DATE,
         SUM(ORDER_AMOUNT) AS TOTAL_REVENUE_ORDERS,
-        SUM(net_revenue_excl_shipping) as net_revenue_excl_shipping,
-        SUM(net_revenue_incl_shipping) as net_revenue_incl_shipping
+        SUM(NET_REVENUE_EXCL_SHIPPING) AS NET_REVENUE_EXCL_SHIPPING,
+        SUM(NET_REVENUE_INCL_SHIPPING) AS NET_REVENUE_INCL_SHIPPING
     FROM
         (
             SELECT
                 SALES_FACT.ORDER_AMOUNT,
                 DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE AS MONTH_START,
                 STG_PRD_CAT.CATEGORY_NAME,
-                order_amount - (order_amount * COALESCE(discount_applied, 0)) as net_revenue_excl_shipping,
-                order_amount - (order_amount * COALESCE(discount_applied, 0)) + COALESCE(shipping_cost, 0) as net_revenue_incl_shipping
+                ORDER_AMOUNT - (ORDER_AMOUNT * COALESCE(DISCOUNT_APPLIED, 0)) AS NET_REVENUE_EXCL_SHIPPING,
+                ORDER_AMOUNT - (ORDER_AMOUNT * COALESCE(DISCOUNT_APPLIED, 0)) + COALESCE(SHIPPING_COST, 0) AS NET_REVENUE_INCL_SHIPPING
             FROM {{ ref('stg_sales_fact') }} AS SALES_FACT
                 LEFT JOIN PRODUCT_CTE AS STG_PRD
                     ON SALES_FACT.PRODUCT_ID = STG_PRD.PRODUCT_ID
@@ -72,8 +72,8 @@ SELECT
     CATEGORY_NAME,
     MONTHLY_DATE,
     TOTAL_REVENUE_ORDERS,
-    net_revenue_excl_shipping,
-    net_revenue_incl_shipping
+    NET_REVENUE_EXCL_SHIPPING,
+    NET_REVENUE_INCL_SHIPPING
 
 FROM
 
