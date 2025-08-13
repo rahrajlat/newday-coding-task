@@ -10,7 +10,7 @@ import requests
 def generate_model_documentation(sql_content: str):
     """
 
-    :param sql_content:
+    :param sql_content: DBT SQL
     :return:
     """
 
@@ -64,6 +64,16 @@ def generate_model_documentation(sql_content: str):
 
 
 def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str:
+    """_summary_
+
+    Args:
+        model_name (str): Name of the DBT Model
+        manifest_file (str): DBT Manifest File
+        project (str): DBT Project Name
+
+    Returns:
+        str: AI Documentation
+    """
     manifest_path = Path(manifest_file)
     if not manifest_path.exists():
         raise FileNotFoundError(f"manifest not found: {manifest_path}")
@@ -141,8 +151,8 @@ def llm_docs_generator(model_name: str, manifest_file: str, project: str) -> str
 
 
 if __name__ == "__main__":
+    model_name = sys.argv[1]
     dbt_project = 'dbt_newday_coding_assignment'
-    model_name = 'stg_product_category'
     dbt_manifest = "/Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/dbt_newday_coding_assignment/target/manifest.json"
 
     llm_docs_generator(model_name=model_name,
