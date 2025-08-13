@@ -130,15 +130,15 @@ sources:
           - name: monthly_date
             description: "Monthly Date"
             tests: [not_null]
-          - name: total_revenue_orders
+          - name: total_revenue_only_order_amount
             description: "Total Revenue just based on the Orders Amount , including shipping"
             tests: [not_null]
           
-          - name: net_revenue_excl_shipping
+          - name: revenue_excl_shipping
             description: "Total Revenue just based on the Orders Amount , excluding shipping"
             tests: [not_null]
 
-          - name: net_revenue_incl_shipping
+          - name: revenue_incl_shipping
             description: "Total Revenue just based on the Orders Amount , including shipping"
             tests: [not_null]
       

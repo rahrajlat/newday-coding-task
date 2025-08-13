@@ -23,10 +23,8 @@ WITH SALES_JOINED AS (
 
     FROM
         {{ ref('stg_sales_fact') }} AS SF
-        LEFT JOIN {{ ref('stg_product') }} AS STG_PRD
-            ON SF.PRODUCT_ID = STG_PRD.PRODUCT_ID
         LEFT JOIN {{ ref('stg_product_category') }} AS STG_PRD_CAT
-            ON STG_PRD.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
+            ON SF.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
     ORDER BY ORDER_DATE
 ),
 
@@ -60,7 +58,8 @@ SELECT
     CASE
         WHEN PREV_REVENUE IS NULL OR PREV_REVENUE = 0 THEN '1st Quarter'
         ELSE ROUND((REVENUE - PREV_REVENUE) / PREV_REVENUE * 100) || '%'
-    END AS QOQ_REV_GROWTH
+    END AS QOQ_REV_GROWTH,
+    current_timestamp as dbt_insert_timestamp
 
 FROM SALES_PER_QUARTER
 ORDER BY YEAR_NO, CATEGORY_NAME, QUARTER_NUMBER

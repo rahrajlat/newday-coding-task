@@ -14,19 +14,8 @@ and calculate the percentage of sales coming from each payment method. Handle nu
 
 */
 
-
-WITH PRODUCT_CTE AS (
-
-    SELECT
-        PRODUCT_ID,
-        PRODUCT_CATEGORY_ID
-    FROM
-
-        {{ ref('stg_product') }}
-
-),
-
-PRODUCT_CATEGORY_CTE AS (
+WITH PRODUCT_CATEGORY_CTE AS (
+    --Bring in Product Category attributes
 
     SELECT
         PRODUCT_ID,
@@ -65,10 +54,8 @@ TRANSFORMATION_CTE AS (
                 DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE AS MONTH_START,
                 STG_PRD_CAT.CATEGORY_NAME
             FROM {{ ref('stg_sales_fact') }} AS SALES_FACT
-                LEFT JOIN PRODUCT_CTE AS STG_PRD
-                    ON SALES_FACT.PRODUCT_ID = STG_PRD.PRODUCT_ID
                 LEFT JOIN PRODUCT_CATEGORY_CTE AS STG_PRD_CAT
-                    ON STG_PRD.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
+                    ON SALES_FACT.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
             WHERE ORDER_QUANTITY > 0
         )
 )
@@ -81,7 +68,8 @@ SELECT
     PAYMENT_METHOD,
     REVENUE_METHOD_PCT_ONLY_ORDER_AMOUNT,
     REVENUE_PAYMENT_METHOD_PCT_EXCLUDING_SHIPPING,
-    REVENUE_PAYMENT_METHOD_PCT_INCLUDING_SHIPPING
+    REVENUE_PAYMENT_METHOD_PCT_INCLUDING_SHIPPING,
+    current_timestamp as dbt_insert_timestamp
 
 FROM
 
