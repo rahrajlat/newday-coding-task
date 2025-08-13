@@ -1,4 +1,0 @@
-version: 2
-models:
-- name: stg_product_category
-  description: '{{ doc("stg_product_category") }}'

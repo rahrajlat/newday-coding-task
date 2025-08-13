@@ -1,4 +1,0 @@
-version: 2
-models:
-- name: stg_sales_fact
-  description: '{{ doc("stg_sales_fact") }}'
