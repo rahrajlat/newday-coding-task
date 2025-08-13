@@ -42,4 +42,4 @@ vars:
 
 
 #sqlfluff fix --templater dbt /Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/dbt_newday_coding_assignment/.sqlfluff models/intermediate/
-#bt test --select source:marts.mart_customer_segmentation
+#dbt test --select source:marts.mart_customer_segmentation
