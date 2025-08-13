@@ -6,14 +6,12 @@ Use this macro in a model to calculate daily revenue totals. Handle cases where 
 
 
 */
-
 {% set start_date = var('start_date') %}
 {% set end_date   = var('end_date') %}
 
 WITH DAILY_RECORDS_CTE AS (
 
-    SELECT * FROM
-        {{ filter_date_range(start_date=start_date,end_date=end_date,table_name=ref('stg_sales_fact'), filter_column='order_date') }}),
+    SELECT * FROM {{ filter_date_range(start_date=start_date,end_date=end_date,table_name=ref('stg_sales_fact'), filter_column='order_date') }}),
 
 DAILY_REVENUE_CTE AS (
 
