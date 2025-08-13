@@ -1,9 +1,18 @@
 
-[tool.sqlfluff.core]
+[sqlfluff]
 templater = dbt
-dialect = postgres  # or your real one
-exclude_paths = target/*, dbt_packages/*, logs/*, macros/*
+dialect = postgres
+large_file_skip_byte_limit = 0
 exclude_rules = LT05, RF02, ST09, RF04, ST06
+
+
+
+# Rule explanations:
+# LT05 - Allow long lines (ignore max line length rule)
+# RF02 - Don't require full qualification of table/column references
+# ST09 - Don't enforce join condition ordering
+# RF04 - Ignore keyword consistency in references
+# ST06 - Don't enforce column ordering in SELECT statements
 
 [sqlfluff:templater:dbt]
 project_dir = .
@@ -19,7 +28,7 @@ indented_joins = True
 capitalisation_policy = upper
 
 [sqlfluff:rules:capitalisation.identifiers]
-extended_capitalisation_policy = lower
+extended_capitalisation_policy = upper
 unquoted_identifiers_policy = all
 
 [sqlfluff:rules:capitalisation.functions]

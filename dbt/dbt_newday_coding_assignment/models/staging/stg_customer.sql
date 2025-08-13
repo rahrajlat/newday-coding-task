@@ -1,10 +1,7 @@
-with cte_customer as 
+WITH CTE_CUSTOMER AS (
 
-(
-
-    select * from 
- {{ source('raw', 'customer') }}
+    SELECT * FROM
+        {{ source('raw', 'customer') }}
 )
 
-
-select * from cte_customer
+SELECT * FROM CTE_CUSTOMER
