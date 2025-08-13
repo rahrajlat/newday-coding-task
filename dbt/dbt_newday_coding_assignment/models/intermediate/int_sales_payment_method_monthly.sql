@@ -11,6 +11,7 @@
 Extend the previous model to handle edge cases where `order_quantity` is zero 
 and calculate the percentage of sales coming from each payment method. Handle null values appropriately.
 
+
 */
 
 
@@ -48,13 +49,20 @@ TRANSFORMATION_CTE AS (
         REVENUE_MONTHLY_PM,
         REVENUE_MONTHLY,
         PAYMENT_METHOD,
-        REVENUE_MONTHLY_PM / REVENUE_MONTHLY * 100 AS REVENUE_METHOD_PCT
+        REVENUE_MONTHLY_PM / REVENUE_MONTHLY * 100 AS REVENUE_METHOD_PCT_ONLY_ORDER_AMOUNT,
+        net_revenue_category_payment_excl_shipping / net_revenue_category_excl_shipping * 100 AS REVENUE_PAYMENT_METHOD_PCT_EXCLUDING_SHIPPING,
+        net_revenue_category_payment_incl_shipping / net_revenue_category_incl_shipping * 100 AS REVENUE_PAYMENT_METHOD_PCT_INCLUDING_SHIPPING
+
     FROM
         (
             SELECT
                 SALES_FACT.ORDER_AMOUNT,
                 SUM(SALES_FACT.ORDER_AMOUNT) OVER (PARTITION BY STG_PRD_CAT.CATEGORY_NAME, DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) AS REVENUE_MONTHLY,
                 SUM(SALES_FACT.ORDER_AMOUNT) OVER (PARTITION BY STG_PRD_CAT.CATEGORY_NAME, PAYMENT_METHOD, DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) AS REVENUE_MONTHLY_PM,
+                SUM(SALES_FACT.order_amount - (SALES_FACT.order_amount * COALESCE(SALES_FACT.discount_applied, 0))) OVER(PARTITION BY STG_PRD_CAT.CATEGORY_NAME, DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) as net_revenue_category_excl_shipping,
+                SUM(SALES_FACT.order_amount - (SALES_FACT.order_amount * COALESCE(SALES_FACT.discount_applied, 0)) + COALESCE(SALES_FACT.shipping_cost, 0)) OVER(PARTITION BY STG_PRD_CAT.CATEGORY_NAME, DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) as net_revenue_category_incl_shipping,
+                SUM(SALES_FACT.order_amount - (SALES_FACT.order_amount * COALESCE(SALES_FACT.discount_applied, 0))) OVER(PARTITION BY STG_PRD_CAT.CATEGORY_NAME, PAYMENT_METHOD,DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) as net_revenue_category_payment_excl_shipping,
+                SUM(SALES_FACT.order_amount - (SALES_FACT.order_amount * COALESCE(SALES_FACT.discount_applied, 0)) + COALESCE(SALES_FACT.shipping_cost, 0)) OVER(PARTITION BY STG_PRD_CAT.CATEGORY_NAME, PAYMENT_METHOD,DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE) as net_revenue_category_payment_incl_shipping,
                 PAYMENT_METHOD,
                 DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE AS MONTH_START,
                 STG_PRD_CAT.CATEGORY_NAME
@@ -72,10 +80,10 @@ TRANSFORMATION_CTE AS (
 SELECT
     CATEGORY_NAME,
     MONTH_START,
-    REVENUE_MONTHLY_PM,
     PAYMENT_METHOD,
-    REVENUE_MONTHLY,
-    REVENUE_METHOD_PCT
+    REVENUE_METHOD_PCT_ONLY_ORDER_AMOUNT,
+    REVENUE_PAYMENT_METHOD_PCT_EXCLUDING_SHIPPING,
+    REVENUE_PAYMENT_METHOD_PCT_INCLUDING_SHIPPING
     
 FROM
 
