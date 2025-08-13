@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: stg_weather_data
+  description: '{{ doc("stg_weather_data") }}'

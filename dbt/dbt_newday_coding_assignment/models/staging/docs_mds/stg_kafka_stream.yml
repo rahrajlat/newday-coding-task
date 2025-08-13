@@ -1,0 +1,4 @@
+version: 2
+models:
+- name: stg_kafka_stream
+  description: '{{ doc("stg_kafka_stream") }}'

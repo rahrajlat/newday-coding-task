@@ -1,14 +1,13 @@
 {% docs stg_product_category %}
 
-Here's the explanation in the fixed format:
+Here is the explanation of the SQL code:
 
 Purpose:
-This SQL code is used to create a view of product categories from the raw data.
+The SQL code retrieves data from a raw table named "product_category" and creates a temporary view for further analysis.
 
 Logic Flow:
-• The SQL code starts by creating a Common Table Expression (CTE) named CTE_PRODUCT_CATEGORY.
-• Within the CTE, it selects all columns (*) from the product_category table in the raw schema.
-• The source function is used to specify the source of the data as the raw schema and the product_category table.
-• Finally, the SQL code selects all columns (*) from the CTE, effectively creating a view of the product categories.
+• The query starts by creating a Common Table Expression (CTE) named "CTE_PRODUCT_CATEGORY".
+• Within the CTE, it selects all columns (*) from a source table "product_category" in the "raw" schema.
+• The CTE is then used as the basis for a SELECT statement that retrieves all rows and columns from the CTE.
 {% enddocs %}
 
