@@ -12,6 +12,7 @@
 
 */
 
+--Product Dimention cte to bring in the product_category_id
 WITH PRODUCT_CTE AS (
 
     SELECT
@@ -23,6 +24,7 @@ WITH PRODUCT_CTE AS (
 
 ),
 
+--Product Category cte to bring in the category_name
 PRODUCT_CATEGORY_CTE AS (
 
     SELECT
@@ -35,6 +37,7 @@ PRODUCT_CATEGORY_CTE AS (
 
 ),
 
+--Join and apply aggregations
 TRANSFORMATION_CTE AS (
 
     SELECT
