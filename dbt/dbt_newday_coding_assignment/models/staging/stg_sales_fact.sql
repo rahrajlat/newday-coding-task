@@ -1,10 +1,7 @@
-with cte_sales_fact as 
+WITH CTE_SALES_FACT AS (
 
-(
-
-    select * from 
- {{ source('raw', 'sales_fact') }}
+    SELECT * FROM
+        {{ source('raw', 'sales_fact') }}
 )
 
-
-select * from cte_sales_fact
+SELECT * FROM CTE_SALES_FACT

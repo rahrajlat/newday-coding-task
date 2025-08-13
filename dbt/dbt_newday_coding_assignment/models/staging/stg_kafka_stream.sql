@@ -1,10 +1,7 @@
-with cte_kafka_stream as 
+WITH CTE_KAFKA_STREAM AS (
 
-(
-
-    select * from 
- {{ source('raw', 'kafka_stream') }}
+    SELECT * FROM
+        {{ source('raw', 'kafka_stream') }}
 )
 
-
-select * from cte_kafka_stream
+SELECT * FROM CTE_KAFKA_STREAM

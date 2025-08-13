@@ -1,10 +1,7 @@
-with cte_subscription_data as 
+WITH CTE_SUBSCRIPTION_DATA AS (
 
-(
-
-    select * from 
- {{ source('raw', 'subscription_data') }}
+    SELECT * FROM
+        {{ source('raw', 'subscription_data') }}
 )
 
-
-select * from cte_subscription_data
+SELECT * FROM CTE_SUBSCRIPTION_DATA

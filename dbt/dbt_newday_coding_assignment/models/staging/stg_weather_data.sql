@@ -1,10 +1,7 @@
-with cte_weather_data as 
+WITH CTE_WEATHER_DATA AS (
 
-(
-
-    select * from 
- {{ source('raw', 'weather_data') }}
+    SELECT * FROM
+        {{ source('raw', 'weather_data') }}
 )
 
-
-select * from cte_weather_data
+SELECT * FROM CTE_WEATHER_DATA

@@ -1,10 +1,7 @@
-with cte_product as 
+WITH CTE_PRODUCT AS (
 
-(
-
-    select * from 
- {{ source('raw', 'product') }}
+    SELECT * FROM
+        {{ source('raw', 'product') }}
 )
 
-
-select * from cte_product
+SELECT * FROM CTE_PRODUCT
