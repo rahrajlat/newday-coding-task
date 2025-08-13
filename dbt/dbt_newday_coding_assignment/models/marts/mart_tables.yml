@@ -9,9 +9,54 @@ sources:
 
     tables:
       - name: mart_customer_segmentation
-        description: "This table holds the customer information"
+        description: "This table holds the customer segmentation information based on their purchase history"
         columns:
           - name: customer_id
+            description: "Unique Identifier for the Customer Record"
             tests: [not_null, unique]
-      
-    
+          - name: customer_name
+            description: "Name of the Customer"
+            tests: [not_null]
+          - name: total_orders
+            description: "Orders Placed by the customer"
+            tests: [not_null]
+          - name: total_purchase_amount
+            description: "Total Purchase Amount"
+            tests: [not_null]
+          - name: customer_tiers
+            description: "Customer Segmentation"
+            tests:
+              - accepted_values:
+                  values: ["Low Value", "Medium Values", "High Value"]
+
+      - name: mart_daily_sales_macro_model
+        description: "This table holds the Revenue generated on the given date range"
+        columns:
+          - name: order_date
+            description: "Date on which the Order is Aggregated"
+            tests: [not_null, unique]
+          - name: total_revenue_by_orders_amount
+            description: "This is Aggregated purely based on the Order Amount excluding discounts & shipments"
+            tests: [not_null]
+          - name: total_revenue_by_excluding_shipping
+            description: "This is Aggregated based on the Order Amount excluding shipments"
+            tests: [not_null]
+          - name: total_revenue_by_including_shipping
+            description: "This is Aggregated purely based on the Order Amount including shipments and discounts"
+            tests: [not_null]
+
+      - name: mart_flag_customer_orders
+        description: "This table flags the transaction if the Discount > 30% or Shipping cost > 10%"
+        columns:
+          - name: order_id
+            description: "Unique Idenfier for an Order"
+            tests: [not_null, unique]
+          - name: discount_applied
+            description: "Applied Discount"
+            tests: [not_null]
+          - name: shipping_cost
+            description: "Cost of the Shipping"
+            tests: [not_null]
+          - name: order_amount
+            description: "This is Aggregated purely based on the Order Amount including shipments and discounts"
+            tests: [not_null]

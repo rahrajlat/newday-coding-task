@@ -36,6 +36,10 @@ vars:
   start_date: 2024-01-15
   end_date: 2024-01-16
 
+#tests:
+  #+store_failures: true
+  #+schema: tests
+
 
 #sqlfluff fix --templater dbt /Users/rahulrajasekharan/vscode_proj/newday-dbt/newday-coding-task/dbt/dbt_newday_coding_assignment/.sqlfluff models/intermediate/
 #bt test --select source:marts.mart_customer_segmentation
