@@ -19,7 +19,12 @@ models:
     intermediate:
       +materialized: table
       +enabled: true
-      +schema: staging
+      +schema: intermediate
+
+    marts:
+      +materialized: table
+      +enabled: true
+      +schema: marts
 
 seeds:
   dbt_newday_coding_assignment:
