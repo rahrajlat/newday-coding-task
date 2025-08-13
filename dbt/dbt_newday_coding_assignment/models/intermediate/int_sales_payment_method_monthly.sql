@@ -8,7 +8,8 @@
 /*
 
 ## Question 2:
-Extend the previous model to handle edge cases where `order_quantity` is zero and calculate the percentage of sales coming from each payment method. Handle null values appropriately.
+Extend the previous model to handle edge cases where `order_quantity` is zero 
+and calculate the percentage of sales coming from each payment method. Handle null values appropriately.
 
 */
 
