@@ -58,5 +58,124 @@ sources:
             description: "Cost of the Shipping"
             tests: [not_null]
           - name: order_amount
-            description: "This is Aggregated purely based on the Order Amount including shipments and discounts"
+            description: "order value of the transaction"
+            tests: [not_null]
+          - name: flagged_transaction
+            description: "Flag for identifying fraud transactions"
+            tests:
+              - accepted_values:
+                  values: ["Y", "N"]
+
+      - name: mart_payment_method_metrics
+        description: "This table has payment related metrics"
+        columns:
+          - name: payment_method
+            description: "Types of Payment methods"
+            tests:
+              - accepted_values:
+                  values: ["bank_transfer", "debit_card","credit_card","paypal"]
+          - name: total_revenue_by_orders_amount
+            description: "Total Revenue just based on the Orders Amount"
+            tests: [not_null]
+          - name: total_revenue_by_excluding_shipping
+            description: "Total Revenue just based on the Orders Amount , excluding shipping"
+            tests: [not_null]
+          - name: total_revenue_by_including_shipping
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+          - name: avg_order_value
+            description: "Average Order Value by payment_method"
+            tests: [not_null]
+          - name: num_of_orders
+            description: "Total Number of Orders Per payment category"
+            tests: [not_null]
+
+      - name: mart_sales_payment_method_monthly
+        description: "Sales per payment method"
+        columns:
+          - name: category_name
+            description: "Types of Product Categories"
+            tests:
+              - accepted_values:
+                  values: ["Sports", "Electronics","Home & Garden","Clothing","Books"]
+          - name: month_start
+            description: "Monthly Date"
+            tests: [not_null]
+          - name: payment_method
+            description: "Types of Payment methods"
+            tests:
+              - accepted_values:
+                  values: ["bank_transfer", "debit_card","credit_card","paypal"]
+          - name: revenue_method_pct_only_order_amount
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+          
+          - name: revenue_payment_method_pct_excluding_shipping
+            description: "Total Revenue just based on the Orders Amount , excluding shipping"
+            tests: [not_null]
+
+          - name: revenue_payment_method_pct_including_shipping
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+
+
+      - name: mart_sales_revenue_product_category_monthly
+        description: "Sales Per Category"
+        columns:
+          - name: category_name
+            description: "Types of Product Categories"
+            tests:
+              - accepted_values:
+                  values: ["Sports", "Electronics","Home & Garden","Clothing","Books"]
+          - name: monthly_date
+            description: "Monthly Date"
+            tests: [not_null]
+          - name: total_revenue_orders
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+          
+          - name: net_revenue_excl_shipping
+            description: "Total Revenue just based on the Orders Amount , excluding shipping"
+            tests: [not_null]
+
+          - name: net_revenue_incl_shipping
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+      
+      - name: mart_seasonal_sales_patterns_monthly
+        description: "Seasonal Sales Patterns"
+        columns:
+          - name: category_name
+            description: "Types of Product Categories"
+            tests:
+              - accepted_values:
+                  values: ["Sports", "Electronics","Home & Garden","Clothing","Books"]
+          - name: monthly_date
+            description: "Monthly Date"
+            tests: [not_null]
+          - name: revenue
+            description: "Total Revenue just based on the Orders Amount , including shipping"
+            tests: [not_null]
+          
+          - name: best_worst_month
+            description: "Flag to know which is the best/worst month"
+            tests:
+              - accepted_values:
+                  values: ["BEST", "WORST","NULL"]
+
+      - name: mart_seasonal_sales_patterns_quarterly
+        description: "Seasonal Sales Patterns"
+        columns:
+          - name: year_no
+            description: "Year"
+            tests: [not_null]
+
+          - name: category_name
+            description: "Types of Product Categories"
+            tests:
+              - accepted_values:
+                  values: ["Sports", "Electronics","Home & Garden","Clothing","Books"]
+
+          - name: quarter_number
+            description: "Year"
             tests: [not_null]
