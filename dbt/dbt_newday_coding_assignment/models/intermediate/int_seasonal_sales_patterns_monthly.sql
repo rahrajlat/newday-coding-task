@@ -11,62 +11,50 @@ Analyze seasonal sales patterns by creating a model that shows:
 
 */
 
-with sales_joined
-as 
+WITH SALES_JOINED AS (
+    SELECT
+        ORDER_DATE,
+        STG_PRD_CAT.CATEGORY_NAME,
+        DATE_TRUNC('month', ORDER_DATE)::DATE AS MONTHLY_DATE,
+        ORDER_AMOUNT
 
-
-(
-select 
-order_date,
-stg_prd_cat.category_name,
-date_trunc('month', order_date)::date as monthly_date,
-order_amount
-
-from 
-{{ ref('stg_sales_fact') }} sf 
-left join {{ ref('stg_product') }}stg_prd
-on sf.product_id=stg_prd.product_id
-left join {{ ref('stg_product_category') }} stg_prd_cat 
-on stg_prd.product_id=stg_prd_cat.product_id
+    FROM
+        {{ ref('stg_sales_fact') }} AS SF
+        LEFT JOIN {{ ref('stg_product') }} AS STG_PRD
+            ON SF.PRODUCT_ID = STG_PRD.PRODUCT_ID
+        LEFT JOIN {{ ref('stg_product_category') }} AS STG_PRD_CAT
+            ON STG_PRD.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
 ),
 
-sales_per_month as 
+SALES_PER_MONTH AS (
 
-(
-
-
-select sales.* ,
-row_number () over (partition by category_name order by revenue desc) as best_row_rn,
-STDDEV_POP(revenue) OVER (PARTITION BY category_name) as std_deviation
-from 
-(
-select 
-category_name,
-monthly_date,
-sum(order_amount) as revenue
-from 
-sales_joined
-group by category_name,monthly_date
-order by category_name,monthly_date
-) sales
+    SELECT
+        SALES.*,
+        ROW_NUMBER() OVER (PARTITION BY SALES.CATEGORY_NAME ORDER BY SALES.REVENUE DESC) AS BEST_ROW_RN,
+        STDDEV_POP(SALES.REVENUE) OVER (PARTITION BY SALES.CATEGORY_NAME) AS STD_DEVIATION
+    FROM
+        (
+            SELECT
+                CATEGORY_NAME,
+                MONTHLY_DATE,
+                SUM(ORDER_AMOUNT) AS REVENUE
+            FROM
+                SALES_JOINED
+            GROUP BY CATEGORY_NAME, MONTHLY_DATE
+            ORDER BY CATEGORY_NAME, MONTHLY_DATE
+        ) AS SALES
 
 )
 
-select 
-category_name,
-monthly_date,
-revenue,
-case when best_row_rn = min(best_row_rn) over(partition by category_name) then 'BEST'
-when best_row_rn = max(best_row_rn) over(partition by category_name) then 'WORST'
-else null 
-end as best_worst_month,
-STDDEV_POP(revenue) OVER (PARTITION BY category_name) / AVG(revenue) OVER (PARTITION BY category_name) as co_efficient_of_variation
+SELECT
+    CATEGORY_NAME,
+    MONTHLY_DATE,
+    REVENUE,
+    CASE
+        WHEN BEST_ROW_RN = MIN(BEST_ROW_RN) OVER (PARTITION BY CATEGORY_NAME) THEN 'BEST'
+        WHEN BEST_ROW_RN = MAX(BEST_ROW_RN) OVER (PARTITION BY CATEGORY_NAME) THEN 'WORST'
+    END AS BEST_WORST_MONTH,
+    STDDEV_POP(REVENUE) OVER (PARTITION BY CATEGORY_NAME) / AVG(REVENUE) OVER (PARTITION BY CATEGORY_NAME) AS CO_EFFICIENT_OF_VARIATION
 
-
-from sales_per_month
-order by category_name,monthly_date
-
-
-
-
-
+FROM SALES_PER_MONTH
+ORDER BY CATEGORY_NAME, MONTHLY_DATE

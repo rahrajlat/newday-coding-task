@@ -1,6 +1,6 @@
 /*
 
-## Question 5: 
+## Question 5:
 Create a dbt model that flags orders for review based on business rules:
 - `discount_applied` > 30%
 - `shipping_cost` > 10% of `order_amount`
@@ -9,48 +9,42 @@ Create a dbt model that flags orders for review based on business rules:
 */
 
 
-with sales_fact_cte as 
-(
-select 
+WITH SALES_FACT_CTE AS (
+    SELECT
 
-order_id,
-round(COALESCE(discount_applied, 0) * 100) as discount_applied,
-COALESCE(shipping_cost, 0) as shipping_cost,
-order_amount,
-order_amount * 10/100 as flag_percentage
-from 
+        ORDER_ID,
+        ROUND(COALESCE(DISCOUNT_APPLIED, 0) * 100) AS DISCOUNT_APPLIED,
+        COALESCE(SHIPPING_COST, 0) AS SHIPPING_COST,
+        ORDER_AMOUNT,
+        ORDER_AMOUNT * 10 / 100 AS FLAG_PERCENTAGE
+    FROM
 
-{{ ref('stg_sales_fact') }}
+        {{ ref('stg_sales_fact') }}
 
 ),
 
-transformation_cte as 
-(
-select 
-order_id,
-discount_applied,
-shipping_cost,
-order_amount,
-flag_percentage,
-case when discount_applied > 30 or shipping_cost > flag_percentage then
-'Y'
-else
-'N'
-end as flagged_transaction,
-concat_ws(
-        '; ',
-        case when discount_applied > 30 then 'DISCOUNT>30%' end,
-        case when shipping_cost > flag_percentage then 'SHIPPING>10%' end
-    ) as flag_reasons
+TRANSFORMATION_CTE AS (
+    SELECT
+        ORDER_ID,
+        DISCOUNT_APPLIED,
+        SHIPPING_COST,
+        ORDER_AMOUNT,
+        FLAG_PERCENTAGE,
+        CASE
+            WHEN DISCOUNT_APPLIED > 30 OR SHIPPING_COST > FLAG_PERCENTAGE
+                THEN
+                    'Y'
+            ELSE
+                'N'
+        END AS FLAGGED_TRANSACTION,
+        CONCAT_WS(
+            '; ',
+            CASE WHEN DISCOUNT_APPLIED > 30 THEN 'DISCOUNT>30%' END,
+            CASE WHEN SHIPPING_COST > FLAG_PERCENTAGE THEN 'SHIPPING>10%' END
+        ) AS FLAG_REASONS
 
-from sales_fact_cte
-
-
-
-
+    FROM SALES_FACT_CTE
 
 )
 
-select * from transformation_cte
-
-
+SELECT * FROM TRANSFORMATION_CTE

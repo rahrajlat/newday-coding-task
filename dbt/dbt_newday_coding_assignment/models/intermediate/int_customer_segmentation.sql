@@ -1,7 +1,7 @@
 /*
 
 
-## Question 3: 
+## Question 3:
 Create a dbt model that segments customers into tiers based on their total purchase amount:
 - "High Value": Total purchases >= $1000
 - "Medium Value": Total purchases between $500-$999
@@ -10,60 +10,54 @@ Create a dbt model that segments customers into tiers based on their total purch
 Include customer names and calculate the number of orders per customer.
 
 
-
 */
 
 
-with cte_customer as 
-(
-select customer_id,customer_name from  {{ ref('stg_customer') }}
+WITH CTE_CUSTOMER AS (
+    SELECT
+        CUSTOMER_ID,
+        CUSTOMER_NAME
+    FROM {{ ref('stg_customer') }}
 
 ),
 
-sales_per_customer as 
-(
+SALES_PER_CUSTOMER AS (
 
+    SELECT
+        CUSTOMER_ID,
+        TOTAL_ORDERS,
+        SUM(ORDER_AMOUNT) AS TOTAL_PURCHASE_AMOUNT
 
-select 
-customer_id,
-total_orders,
-sum(order_amount) as total_purchase_amount
+    FROM
 
+        (
+            SELECT
+                CUSTOMER_ID,
+                COUNT(CUSTOMER_ID) OVER (PARTITION BY CUSTOMER_ID) AS TOTAL_ORDERS,
+                ORDER_AMOUNT
 
-from 
+            FROM {{ ref('stg_sales_fact') }}
 
-(
-select 
-customer_id,
-count(customer_id) OVER (PARTITION BY customer_id) as total_orders,
-order_amount
-
-from {{ ref('stg_sales_fact') }}
-
-)
-group by customer_id,total_orders
+        )
+    GROUP BY CUSTOMER_ID, TOTAL_ORDERS
 ),
 
+MERGE_CUST_SALES AS (
 
-merge_cust_sales
-as 
+    SELECT
+        SPC.CUSTOMER_ID,
+        CUS.CUSTOMER_NAME,
+        TOTAL_ORDERS,
+        TOTAL_PURCHASE_AMOUNT,
+        CASE
+            WHEN TOTAL_PURCHASE_AMOUNT >= 1000 THEN 'High Value'
+            WHEN TOTAL_PURCHASE_AMOUNT BETWEEN 500 AND 999 THEN 'Medium Value'
+            WHEN TOTAL_PURCHASE_AMOUNT < 500 THEN 'Low Value'
+        END AS CUSTOMER_TIERS
 
-(
-
-select 
-spc.customer_id,
-cus.customer_name,
-total_orders,
-total_purchase_amount,
-case when total_purchase_amount >= 1000 then 'High Value'
-when total_purchase_amount between 500 and 999 then 'Medium Value'
-when total_purchase_amount < 500 then 'Low Value'
-end customer_tiers
-
-from sales_per_customer spc
-left join cte_customer cus
-on spc.customer_id=cus.customer_id
+    FROM SALES_PER_CUSTOMER AS SPC
+        LEFT JOIN CTE_CUSTOMER AS CUS
+            ON SPC.CUSTOMER_ID = CUS.CUSTOMER_ID
 )
 
-select * from merge_cust_sales
-
+SELECT * FROM MERGE_CUST_SALES

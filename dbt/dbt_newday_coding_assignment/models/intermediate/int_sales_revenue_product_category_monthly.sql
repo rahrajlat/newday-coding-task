@@ -4,62 +4,59 @@
  Create a dbt model that calculates total revenue by product category for each month. Include basic data transformations and aggregations.
 */
 
-with product_cte as 
-(
+WITH PRODUCT_CTE AS (
 
-select product_id,
-       product_category_id
-       from
+    SELECT
+        PRODUCT_ID,
+        PRODUCT_CATEGORY_ID
+    FROM
 
-       {{ ref('stg_product') }}
-
-),
-
-product_category_cte as
-(
-
-select product_id,
-       category_id,
-       category_name
-       from
-
-       {{ ref('stg_product_category') }}
+        {{ ref('stg_product') }}
 
 ),
 
-transformation_cte as 
+PRODUCT_CATEGORY_CTE AS (
 
-(
+    SELECT
+        PRODUCT_ID,
+        CATEGORY_ID,
+        CATEGORY_NAME
+    FROM
 
+        {{ ref('stg_product_category') }}
 
-select
+),
 
-category_name,
-month_start,
-SUM(order_amount) as total_revenue
-from 
-(
-select 
-sales_fact.order_amount,
-date_trunc('month', sales_fact.order_date)::date AS month_start,
-stg_prd_cat.category_name 
-from {{ ref('stg_sales_fact') }} sales_fact
-left join product_cte stg_prd
-on sales_fact.product_id =stg_prd.product_id 
-left join product_category_cte stg_prd_cat
-on stg_prd.product_id =stg_prd_cat.product_id 
-)
-group by category_name,month_start
-order by category_name,month_start
+TRANSFORMATION_CTE AS (
+
+    SELECT
+
+        CATEGORY_NAME,
+        MONTH_START,
+        SUM(ORDER_AMOUNT) AS TOTAL_REVENUE
+    FROM
+        (
+            SELECT
+                SALES_FACT.ORDER_AMOUNT,
+                DATE_TRUNC('month', SALES_FACT.ORDER_DATE)::DATE AS MONTH_START,
+                STG_PRD_CAT.CATEGORY_NAME
+            FROM {{ ref('stg_sales_fact') }} AS SALES_FACT
+                LEFT JOIN PRODUCT_CTE AS STG_PRD
+                    ON SALES_FACT.PRODUCT_ID = STG_PRD.PRODUCT_ID
+                LEFT JOIN PRODUCT_CATEGORY_CTE AS STG_PRD_CAT
+                    ON STG_PRD.PRODUCT_ID = STG_PRD_CAT.PRODUCT_ID
+        )
+    GROUP BY CATEGORY_NAME, MONTH_START
+    ORDER BY CATEGORY_NAME, MONTH_START
 
 )
 
 --final select
 
-select 
-category_name,
-month_start,
-total_revenue
-from 
+SELECT
+    CATEGORY_NAME,
+    MONTH_START,
+    TOTAL_REVENUE
+FROM
 
-transformation_cte
+    TRANSFORMATION_CTE

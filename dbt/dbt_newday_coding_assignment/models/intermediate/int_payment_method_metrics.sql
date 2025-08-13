@@ -1,6 +1,6 @@
 /*
 
-## Question 4: 
+## Question 4:
 Create a model that analyzes payment method preferences by calculating:
 - Total revenue by payment method
 - Average order value by payment method
@@ -10,83 +10,68 @@ Create a model that analyzes payment method preferences by calculating:
 
 */
 
-with payment_revenue as 
+WITH PAYMENT_REVENUE AS (
 
-(
+    SELECT
 
-select 
+        SUM(ORDER_AMOUNT) AS TOTAL_REVENUE,
+        PAYMENT_METHOD
 
-sum(order_amount) as total_revenue,
-payment_method
+    FROM
 
-from 
+        {{ ref('stg_sales_fact') }}
 
-{{ ref('stg_sales_fact') }}
-
-group by payment_method
+    GROUP BY PAYMENT_METHOD
 
 ),
 
-avg_payment_order_value as 
+AVG_PAYMENT_ORDER_VALUE AS (
 
-(
+    SELECT
 
-select 
+        AVG(ORDER_AMOUNT) AS AVG_REVENUE,
+        PAYMENT_METHOD
 
-avg(order_amount) as avg_revenue,
-payment_method
+    FROM
 
-from 
+        {{ ref('stg_sales_fact') }}
 
-{{ ref('stg_sales_fact') }}
-
-group by payment_method
+    GROUP BY PAYMENT_METHOD
 )
 
 ,
 
-no_of_payment_orders as 
+NO_OF_PAYMENT_ORDERS AS (
 
-(
+    SELECT
 
-select 
+        COUNT(ORDER_ID) AS NUM_OF_ORDERS,
+        PAYMENT_METHOD
 
-count(order_id) as num_of_orders,
-payment_method
+    FROM
 
-from 
+        {{ ref('stg_sales_fact') }}
 
-{{ ref('stg_sales_fact') }}
-
-group by payment_method
+    GROUP BY PAYMENT_METHOD
 ),
 
-transformation_cte as 
-(
-select 
-pr.payment_method,
-total_revenue,
-avg_revenue,
-num_of_orders,
+TRANSFORMATION_CTE AS (
+    SELECT
+        PR.PAYMENT_METHOD,
+        TOTAL_REVENUE,
+        AVG_REVENUE,
+        NUM_OF_ORDERS,
 
-round((num_of_orders::numeric / sum(num_of_orders) over()) * 100, 2) || '%'
-  AS percentage_distribution_num
+        ROUND((NUM_OF_ORDERS::NUMERIC / SUM(NUM_OF_ORDERS) OVER ()) * 100, 2) || '%'
+            AS PERCENTAGE_DISTRIBUTION_NUM
 
-from payment_revenue pr 
-inner join avg_payment_order_value apov
-on pr.payment_method=apov.payment_method
+    FROM PAYMENT_REVENUE AS PR
+        INNER JOIN AVG_PAYMENT_ORDER_VALUE AS APOV
+            ON PR.PAYMENT_METHOD = APOV.PAYMENT_METHOD
 
-inner join no_of_payment_orders nopo
-on pr.payment_method=nopo.payment_method
+        INNER JOIN NO_OF_PAYMENT_ORDERS AS NOPO
+            ON PR.PAYMENT_METHOD = NOPO.PAYMENT_METHOD
 
 )
 
-select * from transformation_cte
-
-
-
-
-
-
-
-
+SELECT * FROM TRANSFORMATION_CTE
