@@ -41,7 +41,7 @@ def get_schema_table_counts(**context):
     cur.execute("""
         SELECT schema_name
         FROM information_schema.schemata
-        WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
+        WHERE schema_name NOT IN ('pg_catalog', 'information_schema','pg_toast','tests','public')
     """)
     schemas = [row[0] for row in cur.fetchall()]
 
