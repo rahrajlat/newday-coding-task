@@ -237,6 +237,125 @@ SELECT COUNT(*) as table_count,'mart_seasonal_sales_patterns_monthly' as mart_ta
 
 I have added tests for the marts tables and they can be found models/marts/mart_tables.yml
 
+
+
+(.venv_dbt) rahulrajasekharan@Rahuls-MacBook-Air dbt_newday_coding_assignment % dbt test
+16:14:54  Running with dbt=1.10.8
+16:14:54  Registered adapter: postgres=1.9.0
+16:14:54  [WARNING][MissingArgumentsPropertyInGenericTestDeprecation]: Deprecated
+functionality
+Found top-level arguments to test `accepted_values`. Arguments to generic tests
+should be nested under the `arguments` property.`
+16:14:55  Found 7 seeds, 23 models, 49 data tests, 15 sources, 437 macros
+16:14:55  
+16:14:55  Concurrency: 1 threads (target='dev')
+16:14:55  
+16:14:55  1 of 49 START test source_accepted_values_marts_mart_customer_segmentation_customer_tiers__Low_Value__Medium_Value__High_Value  [RUN]
+16:14:55  1 of 49 PASS source_accepted_values_marts_mart_customer_segmentation_customer_tiers__Low_Value__Medium_Value__High_Value  [PASS in 0.03s]
+16:14:55  2 of 49 START test source_accepted_values_marts_mart_flag_customer_orders_flagged_transaction__Y__N  [RUN]
+16:14:55  2 of 49 PASS source_accepted_values_marts_mart_flag_customer_orders_flagged_transaction__Y__N  [PASS in 0.01s]
+16:14:55  3 of 49 START test source_accepted_values_marts_mart_payment_method_metrics_payment_method__bank_transfer__debit_card__credit_card__paypal  [RUN]
+16:14:55  3 of 49 PASS source_accepted_values_marts_mart_payment_method_metrics_payment_method__bank_transfer__debit_card__credit_card__paypal  [PASS in 0.01s]
+16:14:55  4 of 49 START test source_accepted_values_marts_mart_sales_payment_method_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [RUN]
+16:14:55  4 of 49 PASS source_accepted_values_marts_mart_sales_payment_method_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [PASS in 0.02s]
+16:14:55  5 of 49 START test source_accepted_values_marts_mart_sales_payment_method_monthly_payment_method__bank_transfer__debit_card__credit_card__paypal  [RUN]
+16:14:55  5 of 49 PASS source_accepted_values_marts_mart_sales_payment_method_monthly_payment_method__bank_transfer__debit_card__credit_card__paypal  [PASS in 0.02s]
+16:14:55  6 of 49 START test source_accepted_values_marts_mart_sales_revenue_product_category_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [RUN]
+16:14:55  6 of 49 PASS source_accepted_values_marts_mart_sales_revenue_product_category_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [PASS in 0.01s]
+16:14:55  7 of 49 START test source_accepted_values_marts_mart_seasonal_sales_patterns_monthly_best_worst_month__BEST__WORST__NULL  [RUN]
+16:14:55  7 of 49 PASS source_accepted_values_marts_mart_seasonal_sales_patterns_monthly_best_worst_month__BEST__WORST__NULL  [PASS in 0.01s]
+16:14:55  8 of 49 START test source_accepted_values_marts_mart_seasonal_sales_patterns_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [RUN]
+16:14:55  8 of 49 PASS source_accepted_values_marts_mart_seasonal_sales_patterns_monthly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [PASS in 0.02s]
+16:14:55  9 of 49 START test source_accepted_values_marts_mart_seasonal_sales_patterns_quarterly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [RUN]
+16:14:55  9 of 49 PASS source_accepted_values_marts_mart_seasonal_sales_patterns_quarterly_category_name__Sports__Electronics__Home_Garden__Clothing__Books  [PASS in 0.02s]
+16:14:55  10 of 49 START test source_not_null_marts_mart_customer_segmentation_customer_id  [RUN]
+16:14:55  10 of 49 PASS source_not_null_marts_mart_customer_segmentation_customer_id ..... [PASS in 0.01s]
+16:14:55  11 of 49 START test source_not_null_marts_mart_customer_segmentation_customer_name  [RUN]
+16:14:55  11 of 49 PASS source_not_null_marts_mart_customer_segmentation_customer_name ... [PASS in 0.01s]
+16:14:55  12 of 49 START test source_not_null_marts_mart_customer_segmentation_total_orders  [RUN]
+16:14:55  12 of 49 PASS source_not_null_marts_mart_customer_segmentation_total_orders .... [PASS in 0.01s]
+16:14:55  13 of 49 START test source_not_null_marts_mart_customer_segmentation_total_purchase_amount  [RUN]
+16:14:55  13 of 49 PASS source_not_null_marts_mart_customer_segmentation_total_purchase_amount  [PASS in 0.01s]
+16:14:55  14 of 49 START test source_not_null_marts_mart_daily_sales_macro_model_order_date  [RUN]
+16:14:55  14 of 49 PASS source_not_null_marts_mart_daily_sales_macro_model_order_date .... [PASS in 0.01s]
+16:14:55  15 of 49 START test source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_excluding_shipping  [RUN]
+16:14:55  15 of 49 PASS source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_excluding_shipping  [PASS in 0.01s]
+16:14:55  16 of 49 START test source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_including_shipping  [RUN]
+16:14:55  16 of 49 PASS source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_including_shipping  [PASS in 0.01s]
+16:14:55  17 of 49 START test source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_orders_amount  [RUN]
+16:14:55  17 of 49 PASS source_not_null_marts_mart_daily_sales_macro_model_total_revenue_by_orders_amount  [PASS in 0.01s]
+16:14:55  18 of 49 START test source_not_null_marts_mart_flag_customer_orders_discount_applied  [RUN]
+16:14:55  18 of 49 PASS source_not_null_marts_mart_flag_customer_orders_discount_applied . [PASS in 0.01s]
+16:14:55  19 of 49 START test source_not_null_marts_mart_flag_customer_orders_order_amount  [RUN]
+16:14:55  19 of 49 PASS source_not_null_marts_mart_flag_customer_orders_order_amount ..... [PASS in 0.01s]
+16:14:55  20 of 49 START test source_not_null_marts_mart_flag_customer_orders_order_id ... [RUN]
+16:14:55  20 of 49 PASS source_not_null_marts_mart_flag_customer_orders_order_id ......... [PASS in 0.01s]
+16:14:55  21 of 49 START test source_not_null_marts_mart_flag_customer_orders_shipping_cost  [RUN]
+16:14:55  21 of 49 PASS source_not_null_marts_mart_flag_customer_orders_shipping_cost .... [PASS in 0.01s]
+16:14:55  22 of 49 START test source_not_null_marts_mart_payment_method_metrics_avg_order_value  [RUN]
+16:14:55  22 of 49 PASS source_not_null_marts_mart_payment_method_metrics_avg_order_value  [PASS in 0.01s]
+16:14:55  23 of 49 START test source_not_null_marts_mart_payment_method_metrics_num_of_orders  [RUN]
+16:14:55  23 of 49 PASS source_not_null_marts_mart_payment_method_metrics_num_of_orders .. [PASS in 0.01s]
+16:14:55  24 of 49 START test source_not_null_marts_mart_payment_method_metrics_total_revenue_by_excluding_shipping  [RUN]
+16:14:55  24 of 49 PASS source_not_null_marts_mart_payment_method_metrics_total_revenue_by_excluding_shipping  [PASS in 0.01s]
+16:14:55  25 of 49 START test source_not_null_marts_mart_payment_method_metrics_total_revenue_by_including_shipping  [RUN]
+16:14:55  25 of 49 PASS source_not_null_marts_mart_payment_method_metrics_total_revenue_by_including_shipping  [PASS in 0.01s]
+16:14:55  26 of 49 START test source_not_null_marts_mart_payment_method_metrics_total_revenue_by_orders_amount  [RUN]
+16:14:55  26 of 49 PASS source_not_null_marts_mart_payment_method_metrics_total_revenue_by_orders_amount  [PASS in 0.02s]
+16:14:55  27 of 49 START test source_not_null_marts_mart_sales_payment_method_monthly_month_start  [RUN]
+16:14:55  27 of 49 PASS source_not_null_marts_mart_sales_payment_method_monthly_month_start  [PASS in 0.01s]
+16:14:55  28 of 49 START test source_not_null_marts_mart_sales_payment_method_monthly_revenue_method_pct_only_order_amount  [RUN]
+16:14:55  28 of 49 PASS source_not_null_marts_mart_sales_payment_method_monthly_revenue_method_pct_only_order_amount  [PASS in 0.01s]
+16:14:55  29 of 49 START test source_not_null_marts_mart_sales_payment_method_monthly_revenue_payment_method_pct_excluding_shipping  [RUN]
+16:14:55  29 of 49 PASS source_not_null_marts_mart_sales_payment_method_monthly_revenue_payment_method_pct_excluding_shipping  [PASS in 0.01s]
+16:14:55  30 of 49 START test source_not_null_marts_mart_sales_payment_method_monthly_revenue_payment_method_pct_including_shipping  [RUN]
+16:14:55  30 of 49 PASS source_not_null_marts_mart_sales_payment_method_monthly_revenue_payment_method_pct_including_shipping  [PASS in 0.01s]
+16:14:55  31 of 49 START test source_not_null_marts_mart_sales_revenue_product_category_monthly_monthly_date  [RUN]
+16:14:55  31 of 49 PASS source_not_null_marts_mart_sales_revenue_product_category_monthly_monthly_date  [PASS in 0.01s]
+16:14:55  32 of 49 START test source_not_null_marts_mart_sales_revenue_product_category_monthly_revenue_excl_shipping  [RUN]
+16:14:55  32 of 49 PASS source_not_null_marts_mart_sales_revenue_product_category_monthly_revenue_excl_shipping  [PASS in 0.01s]
+16:14:55  33 of 49 START test source_not_null_marts_mart_sales_revenue_product_category_monthly_revenue_incl_shipping  [RUN]
+16:14:55  33 of 49 PASS source_not_null_marts_mart_sales_revenue_product_category_monthly_revenue_incl_shipping  [PASS in 0.01s]
+16:14:55  34 of 49 START test source_not_null_marts_mart_sales_revenue_product_category_monthly_total_revenue_only_order_amount  [RUN]
+16:14:55  34 of 49 PASS source_not_null_marts_mart_sales_revenue_product_category_monthly_total_revenue_only_order_amount  [PASS in 0.01s]
+16:14:55  35 of 49 START test source_not_null_marts_mart_seasonal_sales_patterns_monthly_monthly_date  [RUN]
+16:14:55  35 of 49 PASS source_not_null_marts_mart_seasonal_sales_patterns_monthly_monthly_date  [PASS in 0.01s]
+16:14:55  36 of 49 START test source_not_null_marts_mart_seasonal_sales_patterns_monthly_revenue  [RUN]
+16:14:55  36 of 49 PASS source_not_null_marts_mart_seasonal_sales_patterns_monthly_revenue  [PASS in 0.01s]
+16:14:55  37 of 49 START test source_not_null_marts_mart_seasonal_sales_patterns_quarterly_quarter_number  [RUN]
+16:14:55  37 of 49 PASS source_not_null_marts_mart_seasonal_sales_patterns_quarterly_quarter_number  [PASS in 0.01s]
+16:14:55  38 of 49 START test source_not_null_marts_mart_seasonal_sales_patterns_quarterly_year_no  [RUN]
+16:14:55  38 of 49 PASS source_not_null_marts_mart_seasonal_sales_patterns_quarterly_year_no  [PASS in 0.01s]
+16:14:55  39 of 49 START test source_not_null_raw_customer_customer_id ................... [RUN]
+16:14:55  39 of 49 PASS source_not_null_raw_customer_customer_id ......................... [PASS in 0.01s]
+16:14:55  40 of 49 START test source_not_null_raw_product_category_category_id ........... [RUN]
+16:14:55  40 of 49 PASS source_not_null_raw_product_category_category_id ................. [PASS in 0.02s]
+16:14:55  41 of 49 START test source_not_null_raw_product_category_product_id ............ [RUN]
+16:14:55  41 of 49 PASS source_not_null_raw_product_category_product_id .................. [PASS in 0.01s]
+16:14:55  42 of 49 START test source_not_null_raw_product_product_category_id ............ [RUN]
+16:14:55  42 of 49 PASS source_not_null_raw_product_product_category_id .................. [PASS in 0.01s]
+16:14:55  43 of 49 START test source_not_null_raw_product_product_id ..................... [RUN]
+16:14:55  43 of 49 PASS source_not_null_raw_product_product_id ........................... [PASS in 0.01s]
+16:14:55  44 of 49 START test source_unique_marts_mart_customer_segmentation_customer_id . [RUN]
+16:14:55  44 of 49 PASS source_unique_marts_mart_customer_segmentation_customer_id ....... [PASS in 0.01s]
+16:14:55  45 of 49 START test source_unique_marts_mart_daily_sales_macro_model_order_date  [RUN]
+16:14:55  45 of 49 PASS source_unique_marts_mart_daily_sales_macro_model_order_date ...... [PASS in 0.01s]
+16:14:55  46 of 49 START test source_unique_marts_mart_flag_customer_orders_order_id ..... [RUN]
+16:14:55  46 of 49 PASS source_unique_marts_mart_flag_customer_orders_order_id ........... [PASS in 0.01s]
+16:14:55  47 of 49 START test source_unique_raw_customer_customer_id ..................... [RUN]
+16:14:55  47 of 49 PASS source_unique_raw_customer_customer_id ........................... [PASS in 0.01s]
+16:14:55  48 of 49 START test source_unique_raw_product_category_product_id .............. [RUN]
+16:14:55  48 of 49 PASS source_unique_raw_product_category_product_id .................... [PASS in 0.01s]
+16:14:55  49 of 49 START test source_unique_raw_product_product_id ....................... [RUN]
+16:14:55  49 of 49 PASS source_unique_raw_product_product_id ............................. [PASS in 0.01s]
+16:14:55  
+16:14:55  Finished running 49 data tests in 0 hours 0 minutes and 0.83 seconds (0.83s).
+16:14:55  
+16:14:55  Completed successfully
+16:14:55  
+16:14:55  Done. PASS=49 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=49
+16:14:55  [WARNING][DeprecationsSummary]: Deprecated functionality
+
 ## DBT Document Automation 
 
 - This was not a part of the test requirement , but I would like share an idea of automating the DBT document process using a local large language model. I discussed briefly during my 1st round of interview , just added that as an innovation.

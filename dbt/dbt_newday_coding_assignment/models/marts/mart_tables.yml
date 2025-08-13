@@ -27,7 +27,7 @@ sources:
             description: "Customer Segmentation"
             tests:
               - accepted_values:
-                  values: ["Low Value", "Medium Values", "High Value"]
+                  values: ["Low Value", "Medium Value", "High Value"]
 
       - name: mart_daily_sales_macro_model
         description: "This table holds the Revenue generated on the given date range"
