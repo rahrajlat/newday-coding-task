@@ -1,16 +1,19 @@
 /*
 
+## Question 1:
+ Create a dbt model that calculates total revenue by product category for each month. Include basic data transformations and aggregations.
+*/
+
+
+/*
+
 ## Question 2:
 Extend the previous model to handle edge cases where `order_quantity` is zero and calculate the percentage of sales coming from each payment method. Handle null values appropriately.
 
 */
 
 
-/*
 
-## Question 1:
- Create a dbt model that calculates total revenue by product category for each month. Include basic data transformations and aggregations.
-*/
 
 WITH PRODUCT_CTE AS (
 
@@ -43,7 +46,8 @@ TRANSFORMATION_CTE AS (
         MONTH_START,
         REVENUE_MONTHLY_PM,
         REVENUE_MONTHLY,
-        PAYMENT_METHOD
+        PAYMENT_METHOD,
+        REVENUE_MONTHLY_PM / REVENUE_MONTHLY * 100 AS REVENUE_METHOD_PCT
     FROM
         (
             SELECT
@@ -70,7 +74,8 @@ SELECT
     REVENUE_MONTHLY_PM,
     PAYMENT_METHOD,
     REVENUE_MONTHLY,
-    REVENUE_MONTHLY_PM / REVENUE_MONTHLY * 100 AS REVENUE_METHOD_PCT
+    REVENUE_METHOD_PCT
+    
 FROM
 
     TRANSFORMATION_CTE
