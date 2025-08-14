@@ -153,6 +153,7 @@ def llm_docs_generator(model_name: str, manifest_file: str, project: str, out_di
 
 
 if __name__ == "__main__":
+    print("Running")
     model_name = sys.argv[1]
     out_dir = sys.argv[2]
     dbt_project = 'dbt_newday_coding_assignment'
